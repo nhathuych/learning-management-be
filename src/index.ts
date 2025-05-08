@@ -5,8 +5,10 @@ import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import * as dynamoose from 'dynamoose'
+import { clerkMiddleware, requireAuth } from '@clerk/express'
 // ROUTE IMPORT
 import courseRouters from './routes/courseRoutes'
+import userClerkRouters from './routes/userClerkRoutes'
 
 // CONFIGURATIONS
 dotenv.config()
@@ -22,6 +24,7 @@ app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors())
+app.use(clerkMiddleware())
 
 // ROUTES
 app.get('/', (req, res) => {
@@ -29,6 +32,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/courses', courseRouters)
+app.use('/users/clerk', requireAuth(), userClerkRouters)
 
 // SERVER
 const port = process.env.PORT || 3001
