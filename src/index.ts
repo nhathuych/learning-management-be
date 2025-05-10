@@ -9,6 +9,7 @@ import { clerkMiddleware, requireAuth } from '@clerk/express'
 // ROUTE IMPORT
 import courseRouters from './routes/courseRoutes'
 import userClerkRouters from './routes/userClerkRoutes'
+import transactionRouters from './routes/transactionRoutes'
 
 // CONFIGURATIONS
 dotenv.config()
@@ -33,6 +34,7 @@ app.get('/', (req, res) => {
 
 app.use('/courses', courseRouters)
 app.use('/users/clerk', requireAuth(), userClerkRouters)
+app.use('/transactions', requireAuth(), transactionRouters)
 
 // SERVER
 const port = process.env.PORT || 3001
